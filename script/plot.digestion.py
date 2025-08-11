@@ -11,7 +11,7 @@ def filter_zero_windows(df):
     )
     return filtered
 
-def plot_frequency(df, output_path, x_celling):
+def plot_frequency(df, output, x_celling):
     """绘制分类型频率分布图（支持x轴范围控制）"""
     plt.figure(figsize=(12, 6))
     sns.lineplot(
@@ -32,14 +32,15 @@ def plot_frequency(df, output_path, x_celling):
     plt.xlim(0, x_celling)
     
     plt.tight_layout()
-    plt.savefig(output_path, dpi=300)
-    print(f"Plot saved to {output_path}")
+    plt.savefig(output, format='png', dpi=300)
+    plt.savefig(output, format='pdf', dpi=300)
+    plt.savefig(output, format='svg')
 
 def main():
     parser = argparse.ArgumentParser(description="Fragment Frequency Visualization")
     parser.add_argument('input_file', help='输入统计TSV文件路径（包含Type/Window/Frequency列）')
-    parser.add_argument('-o', '--output', default='filtered_frequency_plot.png', 
-                        help='输出图像路径')
+    parser.add_argument('-o', '--output', default='digestion', 
+                        help='prefix of output')
     parser.add_argument('--x_celling', type=int, default=20000, 
                         help='设置x轴的最大显示范围（默认20000）')
     
