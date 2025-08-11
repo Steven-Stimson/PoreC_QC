@@ -4,22 +4,18 @@ import pandas as pd
 import numpy as np
 
 def create_bins(lengths, window_size):
-    """Create bins for length distribution"""
     min_val = 0
     max_val = np.ceil(lengths.max() / window_size) * window_size
     bins = np.arange(min_val, max_val+1, window_size)
     return bins
 
-def bin_length(length, bins):
-    """Get the bin label for a length value"""
-    bin_label = f"{bins[np.digitize(length, bins)-1]}-{bins[np.digitize(length, bins)]}"
-    return bin_label
-
 def calculate_frequencies(df, window_size):
-    """Calculate frequency statistics per type and bin"""
     all_results = []
     
-    for type_group, group in df.groupby('Type'):
+    # 确保Type按首次出现的顺序排列
+    df['Type'] = pd.Categorical(df['Type'], categories=df['Type'].unique(), ordered=True)
+    
+    for type_group, group in df.groupby('Type', group_keys=False):
         bins = create_bins(group['Length'], window_size)
         group['Bin'] = pd.cut(
             group['Length'], 
@@ -27,8 +23,11 @@ def calculate_frequencies(df, window_size):
             right=False, 
             include_lowest=True
         ).apply(lambda x: f"{x.left:.0f}-{x.right:.0f}")
-
-        counts = group['Bin'].value_counts().sort_index()
+        
+        # 获取Bin的首次出现顺序
+        unique_bin_order = group['Bin'].unique()
+        counts = group['Bin'].value_counts().reindex(unique_bin_order)
+        
         total = len(group)
         
         for bin_range, count in counts.items():
@@ -39,7 +38,17 @@ def calculate_frequencies(df, window_size):
                 'Frequency(%)': round(frequency, 2)
             })
     
-    return pd.DataFrame(all_results)
+    # 创建结果DataFrame并保持Type的顺序
+    result_df = pd.DataFrame(all_results)
+    # 确保Type顺序正确，并按Type和Bin的顺序排列
+    result_df['Type'] = pd.Categorical(
+        result_df['Type'], 
+        categories=df['Type'].unique(), 
+        ordered=True
+    )
+    result_df = result_df.sort_values(['Type', 'Window'])
+    
+    return result_df
 
 def main():
     parser = argparse.ArgumentParser()
@@ -51,19 +60,15 @@ def main():
     
     args = parser.parse_args()
     
-    # 读取TSV文件
     df = pd.read_csv(args.input_file, sep='\t')
-    
-    # 确保Length列是数值类型
     df['Length'] = df['Length'].astype(float)
     
-    # 计算频率统计
     result_df = calculate_frequencies(df, args.window_size)
     
-    # 保存结果
+    # 保存结果前，重置索引并保留原始顺序
     result_df.to_csv(args.output, sep='\t', index=False)
     
     print(f"Output saved to {args.output}")
-    
+
 if __name__ == "__main__":
     main()
