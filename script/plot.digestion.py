@@ -32,9 +32,9 @@ def plot_frequency(df, output, x_celling):
     plt.xlim(0, x_celling)
     
     plt.tight_layout()
-    plt.savefig(output, format='png', dpi=300)
-    plt.savefig(output, format='pdf', dpi=300)
-    plt.savefig(output, format='svg')
+    plt.savefig(f'{output}.png', format='png', dpi=300)
+    plt.savefig(f'{output}.pdf', format='pdf', dpi=300)
+    plt.savefig(f'{output}.svg', format='svg')
 
 def main():
     parser = argparse.ArgumentParser(description="Fragment Frequency Visualization")
