@@ -113,7 +113,7 @@ def MappingStat(bam, Qthreshold):
 			total_map_ref = sum(ReadsMap[main_read_id]['ref'].values())
 			if ref_num == 1 and total_map_ref ==1 :
 				read_type = 'align-one'
-			elif max_map_ref > (total_map_ref - max_map_ref): #如果比上最多的那个参考比其余的加起来还要多  ###?order只有2呢1>=(2-1),这种还是认为是inter比较好
+			elif max_map_ref > (total_map_ref - max_map_ref): #如果比上最多的那个参考比其余的加起来还要多
 				read_type = 'intra'
 			else:
 				read_type = 'inter'
@@ -161,7 +161,7 @@ def output_read_type_stats(ReadsMapDF, total_raw_readnum, total_raw_baseslen, ou
 			stats_df.loc[typ] = [0, 0]
     
 	# 按固定顺序输出
-	stats_df = stats_df.loc[['total','align-one', 'intra', 'inter', 'unmapped']]
+	stats_df = stats_df.loc[['total','unmapped', 'align-one', 'intra', 'inter']]
     
 	# 保存为TSV
 	stats_df.to_csv(f"{out_prefix}.map_stats.tsv", sep="\t", float_format="%.0f")
@@ -201,7 +201,7 @@ def order_read_type_read(ReadsMapDF, total_raw_readnum,outfile):
 	# 3. 保留两位小数
 	order_read_type_read = order_read_type_read.round(2)
 	# 4. 调整顺序	
-	order_read_type_read = order_read_type_read[['align-one', 'intra', 'inter','unmapped']]
+	order_read_type_read = order_read_type_read[['unmapped', 'align-one', 'intra', 'inter']]
 	# 5. 输出为tsv格式
 	order_read_type_read.to_csv(outfile, sep='\t', index=True)
 
@@ -245,7 +245,7 @@ def order_read_type_base(ReadsMapDF, total_raw_baseslen,outfile):
 	# 3. 保留两位小数
 	order_read_type_base = order_read_type_base.round(2)
 	# 4. 调整顺序	
-	order_read_type_base = order_read_type_base[['align-one', 'intra', 'inter','unmapped']]
+	order_read_type_base = order_read_type_base[['unmapped', 'align-one', 'intra', 'inter']]
 	# 5. 输出为tsv格式
 	order_read_type_base.to_csv(outfile, sep='\t', index=True)
 
