@@ -395,7 +395,9 @@ def plot_read_len_distribution(ReadsMapDF, out_prefix):
 	
 	# 调整布局并保存
 	plt.tight_layout()
-	plt.savefig(f"{out_prefix}.read_len_distribution.png", dpi=300)
+	plt.savefig(f"{out_prefix}.read_len_distribution.png", format='png', dpi=300)
+	plt.savefig(f"{out_prefix}.read_len_distribution.pdf", format='pdf', dpi=300)
+	plt.savefig(f"{out_prefix}.read_len_distribution.svg", format='svg')
 	plt.close()
 
 
