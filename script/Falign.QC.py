@@ -358,47 +358,55 @@ def cutter_gap(ReadsMapDF, outfile):
 	cutter_gap_df = pd.DataFrame(cutter_gap)
 
 	cutter_gap_df.to_csv(outfile, sep='\t', index=False)
-    
-    
+
+
 def plot_read_len_distribution(ReadsMapDF, out_prefix):
-	"""绘制三类read的长度分布图"""
-	# 筛选三类read并去除未比对reads
-	df = ReadsMapDF.copy()
-	
-	if df.empty:
-		print("Warning: No reads for plotting distribution")
-		return
-	
-	# 设置图形大小
-	plt.figure(figsize=(12, 6))
-	
-	# 绘制直方图
-	plt.subplot(1, 2, 1)
-	for typ in ['align-one', 'intra', 'inter']:
-		subset = df[df['read_type'] == typ]
-		if not subset.empty:
-			plt.hist(subset['read_len'], bins=50, alpha=0.5, label=typ)
-	plt.xlabel('Read Length')
-	plt.ylabel('Count')
-	plt.xlim(0, 20000)
-	plt.title('Read Length Distribution')
-	plt.legend()
-	
-	# 绘制箱线图
-	plt.subplot(1, 2, 2)
-	data_to_plot = [df[df['read_type'] == typ]['read_len'] for typ in ['align-one', 'intra', 'inter']]
-	plt.boxplot(data_to_plot, labels=['align-one', 'intra', 'inter'])
-	plt.xlabel('Read Type')
-	plt.ylabel('Read Length')
-	plt.ylim(0, 20000) 
-	plt.title('Read Length by Type')
-	
-	# 调整布局并保存
-	plt.tight_layout()
-	plt.savefig(f"{out_prefix}.read_len_distribution.png", format='png', dpi=300)
-	plt.savefig(f"{out_prefix}.read_len_distribution.pdf", format='pdf', dpi=300)
-	plt.savefig(f"{out_prefix}.read_len_distribution.svg", format='svg')
+    """绘制三类read的长度分布图"""
+    df = ReadsMapDF.copy()
+    
+    if df.empty:
+        print(f"Warning: No reads for plotting distribution\t{out_prefix}")
+        return
+
+    # 绘制并保存直方图
+    plt.figure(figsize=(12, 6))
+    for typ in ['align-one', 'intra', 'inter']:
+        subset = df[df['read_type'] == typ]
+        if not subset.empty:
+            plt.hist(subset['read_len'], bins=50, alpha=0.5, label=typ)
+    plt.xlabel('Read Length')
+    plt.ylabel('Count')
+    plt.xlim(0, 20000)
+    plt.title('Read Length Distribution')
+    plt.legend()
+    plt.tight_layout()
+
+    # 生成直方图文件名并保存
+    hist_files = []
+    for fmt in ['png', 'pdf', 'svg']:
+        fname = f"{out_prefix}.read_len_distribution.histogram.{fmt}"
+        plt.savefig(fname, format=fmt, dpi=300 if fmt != 'svg' else 'svg')
+        hist_files.append(fname)
+    
 	plt.close()
+
+    # 绘制并保存箱线图
+    plt.figure(figsize=(12, 6))
+    data_to_plot = [df[df['read_type'] == typ]['read_len'] for typ in ['align-one', 'intra', 'inter']]
+    plt.boxplot(data_to_plot, labels=['align-one', 'intra', 'inter'])
+    plt.xlabel('Read Type')
+    plt.ylabel('Read Length')
+    plt.ylim(0, 20000)
+    plt.title('Read Length by Type')
+    plt.tight_layout()
+
+    # 生成箱线图文件名并保存
+    box_files = []
+    for fmt in ['png', 'pdf', 'svg']:
+        fname = f"{out_prefix}.read_len_distribution.boxplot.{fmt}"
+        plt.savefig(fname, format=fmt, dpi=300 if fmt != 'svg' else 'svg')
+        box_files.append(fname)
+    plt.close()
 
 
 def main():
