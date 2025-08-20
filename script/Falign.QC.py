@@ -436,7 +436,7 @@ def main():
         order_ref_num_base(ReadsMapDF, f'{args.ID}.order_ref_num_base.stat')
 
         cutter_gap(ReadsMapDF, f'{args.ID}.gap.stat')
-        align2bed(ReadsMapDF, f'{args.ID}.align.stat')
+        align2bed(ReadsMapDF, f'{args.ID}.align.bed')
         #plot_read_len_distribution(ReadsMapDF, args.ID)
         #map_length(ReadsMapDF, f'{args.ID}.map_length.stat')
 
