@@ -384,7 +384,6 @@ def plot_read_len_distribution(ReadsMapDF, out_prefix):
     plt.savefig(f"{out_prefix}.read_len_distribution.histogram.png", format='png', dpi=300)
     plt.savefig(f"{out_prefix}.read_len_distribution.histogram.pdf", format='pdf', dpi=300)
     plt.savefig(f"{out_prefix}.read_len_distribution.histogram.svg", format='svg')
-
     plt.close()
 
     # 绘制箱线图
