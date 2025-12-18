@@ -64,7 +64,7 @@ def calculate_n50(contig_lengths):
     
         return 0  # 如果在极端情况下所有contig加起来都不足总长的一半（几乎不可能）
 
-def raw_data_info(seqkit_stat):
+def raw_data_info(seqkit_stat, sep=r"\s+"):
         stat = pd.read_table(seqkit_stat)
         stat["num_seqs"] = stat["num_seqs"].str.replace(",", "").astype(int)
         stat["sum_len"] = stat["sum_len"].str.replace(",", "").astype(int)
