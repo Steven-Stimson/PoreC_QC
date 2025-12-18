@@ -53,7 +53,7 @@ for read in samfile:
             lst = []
             readID = read.query_name.split(':')[0]
             rid = read.reference_name
-            start = read.reference_start
+            start = read.reference_start + 1
             end = read.reference_end
             if read.is_reverse:
                 strand = '-'
