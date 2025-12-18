@@ -318,19 +318,6 @@ def order_ref_num_base(ReadsMapDF, outfile):
         return order_ref_num_base
 
 
-def read_len_order(ReadsMapDF, outfile):
-        pass
-
-
-
-def map_length(ReadsMapDF, outfile):
-        df = ReadsMapDF.copy()
-        df = df[['map_stat', 'read_len']]
-        df = df.explode(['map_stat', 'read_len']).reset_index(drop=True)
-        df.to_csv(outfile, sep='\t', index=False)
-
-
-
 def cutter_gap(ReadsMapDF, outfile):
         df = ReadsMapDF.copy()
         cutter_gap = []
@@ -359,50 +346,13 @@ def cutter_gap(ReadsMapDF, outfile):
 
         cutter_gap_df.to_csv(outfile, sep='\t', index=False)
 
-def plot_read_len_distribution(ReadsMapDF, out_prefix):
-    """绘制三类read的长度分布图"""
-    df = ReadsMapDF.copy()
-    
-    if df.empty:
-        print("Warning: No reads for plotting distribution")
-        return
-
-    # 绘制直方图
-    plt.figure(figsize=(12, 6))
-    for typ in ['align-one', 'intra', 'inter']:
-        subset = df[df['read_type'] == typ]
-        if not subset.empty:
-            plt.hist(subset['read_len'], bins=50, alpha=0.5, label=typ)
-    plt.xlabel('Read Length')
-    plt.ylabel('Count')
-    plt.xlim(0, 20000)
-    plt.title('Read Length Distribution')
-    plt.legend()
-    plt.tight_layout()
-    
-    # 保存直方图
-    plt.savefig(f"{out_prefix}.read_len_distribution.histogram.png", format='png', dpi=300)
-    plt.savefig(f"{out_prefix}.read_len_distribution.histogram.pdf", format='pdf', dpi=300)
-    plt.savefig(f"{out_prefix}.read_len_distribution.histogram.svg", format='svg')
-    plt.close()
-
-    # 绘制箱线图
-    plt.figure(figsize=(12, 6))
-    data_to_plot = [df[df['read_type'] == typ]['read_len'] for typ in ['align-one', 'intra', 'inter']]
-    plt.boxplot(data_to_plot, labels=['align-one', 'intra', 'inter'])
-    plt.xlabel('Read Type')
-    plt.ylabel('Read Length')
-    plt.ylim(0, 20000) 
-    plt.title('Read Length by Type')
-    plt.tight_layout() 
-    # 保存箱线图
-    plt.savefig(f"{out_prefix}.read_len_distribution.boxplot.png", format='png', dpi=300)
-    plt.savefig(f"{out_prefix}.read_len_distribution.boxplot.pdf", format='pdf', dpi=300)
-    plt.savefig(f"{out_prefix}.read_len_distribution.boxplot.svg", format='svg')
-    plt.close()
-
-
-
+def stat_read_len_distribution(ReadsMapDF, out_prefix):
+        
+        df = ReadsMapDF.copy()
+        # 仅保留绘图所需的列
+        df = df[['read_len', 'read_type']]
+        # 输出数据到TSV文件
+        df.to_csv(outfile, sep="\t", index=False)
 
 def align2bed(ReadsMapDF, outfile):
         df = ReadsMapDF.copy()
@@ -436,8 +386,7 @@ def main():
 
         cutter_gap(ReadsMapDF, f'{args.ID}.gap.stat')
         align2bed(ReadsMapDF, f'{args.ID}.align.bed')
-        plot_read_len_distribution(ReadsMapDF, args.ID)
-        #map_length(ReadsMapDF, f'{args.ID}.map_length.stat')
+        stat_read_len_distribution(ReadsMapDF, f'{args.ID}.read_len_distribution.stat')
 
 
 
