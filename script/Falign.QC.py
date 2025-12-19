@@ -152,7 +152,7 @@ def output_read_type_stats(ReadsMapDF, total_raw_readnum, total_raw_baseslen, ou
         # 转换为DataFrame并保存
         stats_df = pd.DataFrame({
                 'read_count': read_counts,
-                'base_total': base_totals
+                'base_count': base_count
         }).fillna(0).astype(int)  # 填充NA并转为整数
     
         # 确保所有类型都存在
@@ -164,7 +164,7 @@ def output_read_type_stats(ReadsMapDF, total_raw_readnum, total_raw_baseslen, ou
         stats_df = stats_df.loc[['total','unmapped', 'align-one', 'intra', 'inter']]
     
         # 保存为TSV
-        stats_df.to_csv(f"{out_prefix}.map_stat.tsv", sep="\t", float_format="%.0f")
+        stats_df.to_csv(f"{out_prefix}.map.stat.tsv", sep="\t", float_format="%.0f")
     
         return stats_df
 
