@@ -164,7 +164,7 @@ def output_read_type_stats(ReadsMapDF, total_raw_readnum, total_raw_baseslen, ou
         stats_df = stats_df.loc[['total','unmapped', 'align-one', 'intra', 'inter']]
     
         # 保存为TSV
-        stats_df.to_csv(f"{out_prefix}.map_stats.tsv", sep="\t", float_format="%.0f")
+        stats_df.to_csv(f"{out_prefix}.map_stat.tsv", sep="\t", float_format="%.0f")
     
         return stats_df
 
