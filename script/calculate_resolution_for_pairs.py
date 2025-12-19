@@ -49,9 +49,9 @@ def total_bins_from_header(chrom_sizes, resolution):
 
 def gradient_scan(pairs_file, resolutions,
                   chrom1_idx=1, pos1_idx=2, chrom2_idx=3, pos2_idx=4):
-    print("Reading positions from pairs file...\n")
+    #print("Reading positions from pairs file...\n")
     chrom_pos, chrom_size = read_positions(pairs_file, chrom1_idx, pos1_idx, chrom2_idx, pos2_idx)
-    print("Finished reading. Running gradient resolution scan...\n")
+    #print("Finished reading. Running gradient resolution scan...\n")
 
     for r in resolutions:
         total = total_bins_from_header(chrom_size, r)
@@ -62,7 +62,7 @@ def gradient_scan(pairs_file, resolutions,
 
         frac = stats["fraction"]
 
-        print(f"Resolution {r:7d} bp | over1kcontact={frac:.3f}")
+        print(f"Resolution {r:7d} bp | over 1k contact = {frac:.3f}")
 
         # ---- Choose your stopping condition ----
         perct_cutoff = 0.8
