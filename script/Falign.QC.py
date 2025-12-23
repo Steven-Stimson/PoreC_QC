@@ -152,7 +152,7 @@ def output_read_type_stats(ReadsMapDF, total_raw_readnum, total_raw_baseslen, ou
         # 转换为DataFrame并保存
         stats_df = pd.DataFrame({
                 'read_count': read_counts,
-                'base_count': base_count
+                'base_count': base_totals
         }).fillna(0).astype(int)  # 填充NA并转为整数
     
         # 确保所有类型都存在
