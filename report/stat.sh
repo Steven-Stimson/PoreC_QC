@@ -7,7 +7,7 @@ cd $PWD
 cat $1.DataQC.tsv | perl -ne 'if(1..1){next}else{@l=split/\s+/;$l[3]=~s/,//g;$l[4]=~s/,//g;$num+=$l[3];$len+=$l[4];}END{print"Total\tFASTQ\tDNA\t$num\t$len\n"}' | digit_formatter.pl -k > tmp1.seqkit.QC.stat.tsv
 
 
-cat $1.DataQC.tsv | sed 's/ \+/     /g' | cut -f 1,4,5,7,13,18,17 > tmp2.seqkit.QC.stat.tsv
+cat $1.DataQC.tsv | cut -f 1,4,5,7,13,18,17 > tmp2.seqkit.QC.stat.tsv
 cat tmp2.seqkit.QC.stat.tsv tmp1.seqkit.QC.stat.tsv > $1.seqkit.QC.stat.tsv
 rm tmp2.seqkit.QC.stat.tsv tmp2.seqkit.QC.stat.tsv
 
