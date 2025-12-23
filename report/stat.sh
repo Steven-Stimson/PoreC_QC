@@ -17,6 +17,4 @@ cat $1.sort.digestion.pairs.gz.stat | perl -ne 'BEGIN{print "type\tpairwise cont
 
 awk -v OFS="\t" 'BEGIN{print "Resolution(bp)\tRatio of bins over 1k contact(%)"}{if(/^Resolution/){print $2,$NF*100}}' $1.sort.valid.pairs.gz.resolution > $1.resolution.stat.tsv
 
-cat $1.map.stat.tsv | digit_formatter.pl -k > $1.align.stat.tsv
-
 cat $1.map.stat.tsv |awk -v OFS="\t" 'BEGIN{print "type\tread_cout\tread_ratio(%)\tbase_count\tbase_ratio(%)"}{if(NR==2){r=$2;b=$3}else if(NR>2){rr=$2/r*100;br=$3/b*100;print $1,$3,br,$2,rr}}' | digit_formatter.pl -k -f 2 > $1.align.stat.tsv
