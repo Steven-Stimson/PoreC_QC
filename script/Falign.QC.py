@@ -386,7 +386,7 @@ def main():
 
         cutter_gap(ReadsMapDF, f'{args.ID}.gap.stat')
         align2bed(ReadsMapDF, f'{args.ID}.align.bed')
-        stat_read_len_distribution(ReadsMapDF, f'{args.ID}.read_len_distribution.stat')
+        stat_read_len_distribution(ReadsMapDF, f'{args.ID}.read_len_distribution.tsv')
 
 
 
