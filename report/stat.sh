@@ -3,6 +3,7 @@
 ## $1   EntityID
 
 export PATH=$(dirname $0):$PATH
+export PATH=/opt/software/PoreC_QC/report:$PATH
 cd $PWD
 
 cat $1.DataQC.tsv | perl -ne 'if(1..1){next}else{@l=split/\s+/;$l[3]=~s/,//g;$l[4]=~s/,//g;$num+=$l[3];$len+=$l[4];}END{print"Total\t$num\t$len\n"}' | digit_formatter.pl -k > tmp1.seqkit.QC.stat.tsv
