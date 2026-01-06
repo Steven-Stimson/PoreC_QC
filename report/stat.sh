@@ -14,9 +14,9 @@ cat tmp2.seqkit.QC.stat.tsv tmp1.seqkit.QC.stat.tsv > $1.seqkit.QC.stat.tsv
 
 export data=$(tail -1 $1.seqkit.QC.stat.tsv | cut -f3 | sed 's/,//g')
 
-cat $1.sort.digestion.pairs.gz.stat | perl -ne 'BEGIN{print "type\tpairwise contact\tyield pairwise contacts per Gb\n"}{chomp;@l=split/\t/;$ratio=($l[1]/$ENV{data})*1000000000;$ratio=~s/\.\d+$//;print"$l[0]\t$l[1]\t$ratio\n"}' | digit_formatter.pl -k > $1.pairwise.stat.tsv
+cat $1.sorted.digestion.greedy.pairs.gz.stat | perl -ne 'BEGIN{print "type\tpairwise contact\tyield pairwise contacts per Gb\n"}{chomp;@l=split/\t/;$ratio=($l[1]/$ENV{data})*1000000000;$ratio=~s/\.\d+$//;print"$l[0]\t$l[1]\t$ratio\n"}' | digit_formatter.pl -k > $1.pairwise.stat.tsv
 
-awk -v OFS="\t" 'BEGIN{print "Resolution(bp)\tRatio of bins over 1k contact(%)"}{if(/^Resolution/){print $2,$NF*100}}' $1.sort.valid.pairs.gz.resolution > $1.resolution.stat.tsv
+awk -v OFS="\t" 'BEGIN{print "Resolution(bp)\tRatio of bins over 1k contact(%)"}{if(/^Resolution/){print $2,$NF*100}}' $1.sorted.valid.greedy.pairs.gz.resolution > $1.resolution.stat.tsv
 
 cat $1.map.stat.tsv | digit_formatter.pl -k > $1.align.stat.tsv
 
